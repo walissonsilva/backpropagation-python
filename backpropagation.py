@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt  # Para plotar graficos
 import numpy as np  # Array do Python
-from sklearn import datasets  # Biblioteca sklearn para carregar os dados
 from math  import sqrt, pi
 
 class Backpropagation(object):
-    def __init__(self, eta=0.01, epoch_max=20000, Ni=2, Nh=5, Ns=1):
+    def __init__(self, eta=0.01, epoch_max=20000, Ni=2, Nh=8, Ns=1):
         self.eta = eta
         self.epoch_max = epoch_max
         self.Ni = Ni
@@ -73,6 +72,8 @@ class Backpropagation(object):
                     plt.clf()
                 
                 self.plot(z, epoca)
+        
+        print MSE[-1]
 
         plt.ioff()
         plt.figure(1)
