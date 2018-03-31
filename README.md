@@ -26,9 +26,11 @@ Na Figura abaixo temos o MSE em função do `Nh` (variando entre 2 e 8). Pelo gr
 
 ![MSE em função de Nh](imagens/MSExNH.png)
 
-## Variação da Taxa de Aprendizagem ($\eta$)
+## Variação da Taxa de Aprendizagem (TA)
 
-$\eta$ | MSE Final
+- A taxa de aprendizagem corresponde à variável `eta` do método `__init__` no código do arquivo `backpropagation.py`.
+
+TA | MSE Final
 :---:  | :------:
 0.005  | 0.000651237838196
 0.0075 | 0.000509132366308
@@ -48,7 +50,7 @@ $\eta$ | MSE Final
 
 > *** Muita instabilidade no MSE, apresentando vários picos ao longo do treinamento.
 
-O valor ótimo para a taxa de aprendizagem, nesta análise, foi `0.01675`, no entanto, nesse caso houve certa instabilidade no MSE, o que não é desejável no sistema. Sendo assim, o valor mais adequado a ser utilizado é `0.014`, uma vez que apresentou o menor MSE com estabilidade. Nota-se que valores muito pequenos da taxa de aprendizagem afetam negativamente no aprendizado, entretanto, valores elevados de $\eta$ afetam ainda mais no desempenho. A Figura abaixo ilustra os dados apresentados na tabela.
+O valor ótimo para a taxa de aprendizagem, nesta análise, foi `0.01675`, no entanto, nesse caso houve certa instabilidade no MSE, o que não é desejável no sistema. Sendo assim, o valor mais adequado a ser utilizado é `0.014`, uma vez que apresentou o menor MSE com estabilidade. Nota-se que valores muito pequenos da taxa de aprendizagem afetam negativamente no aprendizado, entretanto, valores elevados dessa variável afetam ainda mais no desempenho. A Figura abaixo ilustra os dados apresentados na tabela.
 
 ![MSE em função de Nh](imagens/MSExTA.png)
 
