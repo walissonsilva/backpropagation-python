@@ -1,8 +1,10 @@
 # Backpropagation em Python
 
-- O algoritmo do Backpropagation implementado na linguagem Python 2.7.
+- O algoritmo do Backpropagation está implementado na linguagem Python 2.7 no arquivo `backpropagation.py`.
 
 - O algoritmo foi desenvolvido para a aproximação de funções. Foram implementadas três métodos com três funções distintas: `load_first_function`, `load_second_function` e `load_third_function`.
+
+- O arquivo `plot-results.py` foi utilizado apenas para plotar os resultados que serão apresentados a seguir.
 
 ![Resultado com a primeira função](imagens/resultado-backpropagation.png)
 ![Erro na aproximação da primeira função](imagens/MSE-backpropagation.png)
@@ -40,11 +42,11 @@ $\eta$ | MSE Final
 0.02   | 0.00860499719853***
 0.03   | 0.578760552709***
 
-> \* Pouca instabilidade (apenas no final do treinamento).
+> \* Pouca instabilidade no MSE (apenas no final do treinamento).
 
-> ** Pouca instabilidade (apenas no início do treinamento).
+> ** Pouca instabilidade no MSE (apenas no início do treinamento).
 
-> *** Muita instabilidade no erro, apresentando alguns picos ao longo do treinamento.
+> *** Muita instabilidade no MSE, apresentando vários picos ao longo do treinamento.
 
 O valor ótimo para a taxa de aprendizagem, nesta análise, foi `0.01675`, no entanto, nesse caso houve certa instabilidade no MSE, o que não é desejável no sistema. Sendo assim, o valor mais adequado a ser utilizado é `0.014`, uma vez que apresentou o menor MSE com estabilidade. Nota-se que valores muito pequenos da taxa de aprendizagem afetam negativamente no aprendizado, entretanto, valores elevados de $\eta$ afetam ainda mais no desempenho. A Figura abaixo ilustra os dados apresentados na tabela.
 
