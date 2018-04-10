@@ -19,50 +19,32 @@ class Backpropagation(object):
         self.X_train = x / xmax
         self.d = 1 / (1 + np.exp(-1 * x))*(np.cos(x) - np.sin(x))
         #self.d = np.sin(x) * np.cos(x)
-    
+
     def load_second_function(self):
         x = np.arange(-6, 6, 0.24)
         self.N = x.shape[0]
         xmax = np.max(x)
 
         self.X_train = x / xmax
-        self.d = np.sin(x) / x
-    
-    def load_third_function(self):
-        x = np.arange(-5, 15, 0.25)
-        self.N = x.shape[0]
-        xmax = np.max(x)
-
-        self.X_train = x# / xmax
-        self.d = np.exp(-(x - 5)**2 / (2 * 2.71**2)) / (2.71 * sqrt(2 * pi))
-        self.show_function()
-    
-    def load_four_function(self):
-        x = np.arange(0, 6, 0.1)
-        self.N = x.shape[0]
-        xmax = np.max(x)
-
-        self.X_train = x / xmax
-        #self.d = np.exp(-(x - 5)**2 / (2 * 2.71**2)) / (2.71 * sqrt(2 * pi))
-        self.d = np.exp(-x)
-        self.show_function()
+        self.d = -x**2
     
     def train(self):
         self.Wji = np.random.rand(self.Nh, self.Ni) * self.Wini
         self.Wkj = np.random.rand(self.Ns, self.Nh + 1) * self.Wini
+        self.Kj = 10
 
         MSE = np.zeros(self.epoch_max)
         plt.ion()
 
         for epoca in xrange(self.epoch_max):
-            deltaWkj = deltaWji = 0
+            deltaWkj = deltaWji = deltaKj = 0
             z = np.zeros(self.N)
             E = np.zeros(self.N)
 
             for i in xrange(self.N):
                 xi = np.array([-1, self.X_train[i]]).reshape(1, -1)
                 netj = np.dot(self.Wji, xi.T)
-                yj = 1 / (1 + np.exp(-netj.T))
+                yj = 1 / (1 + self.Kj**(-netj.T))
                 yj_pol = np.insert(yj[0], 0, -1).reshape(1, -1)
                 z[i] = np.dot(self.Wkj, yj_pol.T)[0][0]
 
@@ -70,11 +52,15 @@ class Backpropagation(object):
                 etae = - self.eta * e
                 deltaWkj -= np.dot(etae, yj_pol)
                 deltaWji -= np.dot(etae * (self.Wkj[:,1:] * yj * (1 - yj)).T, xi)
+                deltaKj -= np.dot(etae * (self.Wkj[:,1:] / self.Kj * yj**2), (netj * self.Kj**(-netj)))
 
                 E[i] = 0.5 * e**2
             
             self.Wkj += deltaWkj
             self.Wji += deltaWji
+            self.Kj += deltaKj
+
+            print self.Kj
 
             MSE[epoca] = np.sum(E) / self.N
 
@@ -99,7 +85,7 @@ class Backpropagation(object):
         plt.figure(0)
         y, = plt.plot(self.X_train, saida, label="y")
         d, = plt.plot(self.X_train, self.d, label="d")
-        plt.legend([y, d], ['Output of Network Neural', 'Desired Value'])
+        plt.legend([y, d], ['MLP Output', 'Desired Value'])
         plt.xlabel('x')
         plt.ylabel('f(x)')
         plt.text(np.min(self.X_train) - np.max(self.X_train) * 0.17  , np.min(self.d) - np.max(self.d) * 0.17, 'Progress: ' + str(round(float(epoca) / self.epoch_max * 100, 2)) + '%')

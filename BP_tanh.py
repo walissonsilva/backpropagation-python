@@ -19,33 +19,14 @@ class Backpropagation(object):
         self.X_train = x / xmax
         self.d = 1 / (1 + np.exp(-1 * x))*(np.cos(x) - np.sin(x))
         #self.d = np.sin(x) * np.cos(x)
-    
+
     def load_second_function(self):
         x = np.arange(-6, 6, 0.24)
         self.N = x.shape[0]
         xmax = np.max(x)
 
         self.X_train = x / xmax
-        self.d = np.sin(x) / x
-    
-    def load_third_function(self):
-        x = np.arange(-5, 15, 0.25)
-        self.N = x.shape[0]
-        xmax = np.max(x)
-
-        self.X_train = x# / xmax
-        self.d = np.exp(-(x - 5)**2 / (2 * 2.71**2)) / (2.71 * sqrt(2 * pi))
-        self.show_function()
-    
-    def load_four_function(self):
-        x = np.arange(0, 6, 0.1)
-        self.N = x.shape[0]
-        xmax = np.max(x)
-
-        self.X_train = x / xmax
-        #self.d = np.exp(-(x - 5)**2 / (2 * 2.71**2)) / (2.71 * sqrt(2 * pi))
-        self.d = np.exp(-x)
-        self.show_function()
+        self.d = -x**2
     
     def train(self):
         self.Wji = np.random.rand(self.Nh, self.Ni) * self.Wini
@@ -62,17 +43,18 @@ class Backpropagation(object):
             for i in xrange(self.N):
                 xi = np.array([-1, self.X_train[i]]).reshape(1, -1)
                 netj = np.dot(self.Wji, xi.T)
-                yj = 1 / (1 + np.exp(-netj.T))
+                yj = np.tanh(netj.T)
                 yj_pol = np.insert(yj[0], 0, -1).reshape(1, -1)
                 z[i] = np.dot(self.Wkj, yj_pol.T)[0][0]
 
                 e = self.d[i] - z[i]
                 etae = - self.eta * e
                 deltaWkj -= np.dot(etae, yj_pol)
-                deltaWji -= np.dot(etae * (self.Wkj[:,1:] * yj * (1 - yj)).T, xi)
+                deltaWji -= np.dot(etae * (self.Wkj[:,1:] * (1 - yj**2)).T, xi)
 
                 E[i] = 0.5 * e**2
             
+            print deltaWkj
             self.Wkj += deltaWkj
             self.Wji += deltaWji
 
